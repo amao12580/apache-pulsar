@@ -3,6 +3,7 @@ package com.study.apache.pulsar.dto.response.message;
 import com.study.apache.pulsar.dto.response.base.BaseResponseDataDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -12,6 +13,7 @@ import lombok.EqualsAndHashCode;
  * Date:2019/4/26
  * Time:15:22
  */
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Data
 @ApiModel("消息发送结果对象")

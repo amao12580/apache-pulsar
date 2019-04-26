@@ -14,13 +14,19 @@ import java.io.Serializable;
  */
 @Data
 @ApiModel("基础的返回对象-数据区")
-public class BaseResponseDataDto<Message> implements Serializable {
+public class BaseResponseDataDto<T> implements Serializable {
     @ApiModelProperty(value = "业务消息代码", required = true, example = "0，即成功")
-    String code;
+    String code = "0";
 
     @ApiModelProperty(value = "业务数据内容")
-    Message message;
+    T message;
 
     @ApiModelProperty(value = "错误信息")
     Error error;
+
+    public static <M> BaseResponseDataDto<M> newResponse(M message) {
+        BaseResponseDataDto<M> dto = new BaseResponseDataDto<>();
+        dto.setMessage(message);
+        return dto;
+    }
 }

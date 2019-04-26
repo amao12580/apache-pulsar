@@ -1,0 +1,18 @@
+server:
+  port: 8002
+
+
+swagger:
+  base-package: com.study
+  globalOperationParameters:
+    - name: "Authorization"
+      description: "鉴权参数"
+      parameterType: "header"
+      modelRef: "string"
+      required: "true"
+
+    - name: "x-tenant-id"
+      description: "租户参数"
+      parameterType: "header"
+      modelRef: "string"
+      required: "true"

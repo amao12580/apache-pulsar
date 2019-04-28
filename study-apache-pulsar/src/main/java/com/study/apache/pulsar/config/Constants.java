@@ -22,7 +22,9 @@ public interface Constants {
 
     String CONSUMER_TEST = "my-consumer-03";
 
-    String PRODUCER_NAME_TEST = "product-03";
+    String PRODUCT_NAME_TEST = "product-03";
+
+    String PRODUCER_NAME_TEST = "producer-03";
 
     String DEFAULT_PRODUCES = MediaType.APPLICATION_JSON_UTF8_VALUE;
     String DEFAULT_CONSUMES = MediaType.APPLICATION_JSON_UTF8_VALUE;

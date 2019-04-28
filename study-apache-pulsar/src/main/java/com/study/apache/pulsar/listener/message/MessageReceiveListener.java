@@ -28,7 +28,6 @@ public class MessageReceiveListener implements MessageListener<String> {
         log.info(message.getKey());
         log.info("{}", message.getEventTime());
         log.info(message.getMessageId().toString());
-        message.getValue();
         log.info("消息内容:{}", message.getValue());
         try {
             consumer.acknowledge(message);

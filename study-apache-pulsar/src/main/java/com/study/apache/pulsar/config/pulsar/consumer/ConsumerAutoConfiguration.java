@@ -2,7 +2,6 @@ package com.study.apache.pulsar.config.pulsar.consumer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.*;
-import org.apache.pulsar.client.impl.schema.JSONSchema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +30,7 @@ public class ConsumerAutoConfiguration {
 
     @Bean
     Consumer<String> createConsumer(PulsarClient client) throws PulsarClientException {
-        consumer = client.newConsumer(JSONSchema.of(String.class))
+        consumer = client.newConsumer(Schema.STRING)
                 .topic(TOPIC_TEST)
                 .subscriptionName(PRODUCER_NAME_TEST)
                 .ackTimeout(30, TimeUnit.SECONDS)

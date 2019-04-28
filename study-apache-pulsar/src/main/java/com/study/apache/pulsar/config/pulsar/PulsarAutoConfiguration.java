@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PreDestroy;
 
+import java.util.concurrent.TimeUnit;
+
 import static com.study.apache.pulsar.config.Constants.SERVICE_URL;
 
 /**
@@ -27,6 +29,7 @@ public class PulsarAutoConfiguration {
     PulsarClient createPulsarClient() throws PulsarClientException {
         client = PulsarClient.builder()
                 .serviceUrl(SERVICE_URL)
+                .connectionTimeout(3, TimeUnit.SECONDS)
                 .allowTlsInsecureConnection(true)
                 .build();
         return client;

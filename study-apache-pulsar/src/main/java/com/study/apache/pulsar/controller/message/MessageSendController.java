@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.nio.charset.Charset;
 import java.util.List;
 
 import static com.study.apache.pulsar.config.Constants.DEFAULT_PRODUCES;
@@ -54,8 +53,7 @@ public class MessageSendController {
         log.info(producer.getProducerName());
         log.info(producer.getTopic());
         log.info("lastSequenceId:{}", producer.getLastSequenceId());
-        return BaseResponse.newInstance(messageRequestDto, ResponseBody.success(new MessageResponseDto(
-                new String(messageId.toByteArray(), Charset.forName("utf-8")))));
+        return BaseResponse.newInstance(messageRequestDto, ResponseBody.success(new MessageResponseDto(messageId.toString())));
     }
 
     @ApiOperation(value = "批量发送消息", produces = DEFAULT_PRODUCES)

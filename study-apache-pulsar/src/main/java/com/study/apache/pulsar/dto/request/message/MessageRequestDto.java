@@ -1,7 +1,7 @@
 package com.study.apache.pulsar.dto.request.message;
 
-import com.study.apache.pulsar.dto.request.base.BaseRequestDataDto;
 import com.study.apache.pulsar.dto.request.message.enums.MessageRequestEnum;
+import com.study.apache.pulsar.protocol.request.body.RequestBody;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -12,11 +12,13 @@ import lombok.EqualsAndHashCode;
  * User:ChengLiang
  * Date:2019/4/26
  * Time:15:22
+ *
+ * @author steven
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @ApiModel("消息发送请求参数对象")
-public class MessageRequestDto extends BaseRequestDataDto {
+public class MessageRequestDto extends RequestBody<MessageRequestDto> {
     @ApiModelProperty(value = "消息类型", required = true, example = "SIMPLE")
     MessageRequestEnum type;
     @ApiModelProperty(value = "消息接收者", required = true)

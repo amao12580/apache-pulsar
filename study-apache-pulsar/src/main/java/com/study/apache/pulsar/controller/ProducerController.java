@@ -1,11 +1,12 @@
 package com.study.apache.pulsar.controller;
 
 
-import com.study.apache.pulsar.dto.request.base.BaseRequestDto;
+import com.alibaba.fastjson.JSON;
 import com.study.apache.pulsar.dto.request.message.MessageRequestDto;
-import com.study.apache.pulsar.dto.response.base.BaseResponseDataDto;
-import com.study.apache.pulsar.dto.response.base.BaseResponseDto;
 import com.study.apache.pulsar.dto.response.message.MessageResponseDto;
+import com.study.apache.pulsar.protocol.request.BaseRequest;
+import com.study.apache.pulsar.protocol.response.BaseResponse;
+import com.study.apache.pulsar.protocol.response.body.ResponseBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -25,6 +26,8 @@ import javax.annotation.Resource;
  * User:ChengLiang
  * Date:2029/4/26
  * Time:15:17
+ *
+ * @author steven
  */
 @Slf4j
 @Api(tags = "测试 produce")
@@ -33,20 +36,20 @@ import javax.annotation.Resource;
 public class ProducerController {
 
     @Resource
-    Producer<MessageRequestDto> messageRequestDtoProducer;
+    Producer<Object> producer;
 
     @ApiOperation(value = "发送一条消息")
     @PostMapping(value = "/simple")
-    public BaseResponseDto<MessageResponseDto> simple(@RequestBody @ApiParam(value = "消息发送请求对象", required = true) BaseRequestDto<MessageRequestDto> messageRequestDto) throws PulsarClientException {
+    public BaseResponse<MessageResponseDto> simple(@RequestBody @ApiParam(value = "消息发送请求对象", required = true) BaseRequest<MessageRequestDto> messageRequestDto) throws PulsarClientException {
         log.info("messageRequestDto:{}", messageRequestDto.toString());
-        MessageRequestDto data = messageRequestDto.getData();
+        MessageRequestDto data = messageRequestDto.getBody().getData();
         log.info("data:{}", data.toString());
-        messageRequestDtoProducer.send(data);
-        log.info("numMsgsSent:{}", messageRequestDtoProducer.getStats().getNumMsgsSent());
-        log.info(messageRequestDtoProducer.getProducerName());
-        log.info(messageRequestDtoProducer.getTopic());
-        log.info("lastSequenceId:{}", messageRequestDtoProducer.getLastSequenceId());
-        return BaseResponseDto.newResponse(messageRequestDto, BaseResponseDataDto.newResponse(new MessageResponseDto(
+        producer.send(JSON.toJSONString(data));
+        log.info("numMsgsSent:{}", producer.getStats().getNumMsgsSent());
+        log.info(producer.getProducerName());
+        log.info(producer.getTopic());
+        log.info("lastSequenceId:{}", producer.getLastSequenceId());
+        return BaseResponse.newInstance(messageRequestDto, ResponseBody.success(new MessageResponseDto(
                 String.valueOf(System.currentTimeMillis()))));
     }
 }

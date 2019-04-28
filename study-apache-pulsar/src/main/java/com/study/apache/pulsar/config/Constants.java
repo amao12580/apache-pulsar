@@ -1,4 +1,4 @@
-package com.study.apache.pulsar.conf;
+package com.study.apache.pulsar.config;
 
 /**
  * Created with IntelliJ IDEA.

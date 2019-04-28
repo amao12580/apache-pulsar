@@ -1,4 +1,4 @@
-package com.study.apache.pulsar.dto.request.base.enums;
+package com.study.apache.pulsar.protocol.request.enums.device;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -9,10 +9,12 @@ import lombok.Getter;
  * User:ChengLiang
  * Date:2019/4/26
  * Time:15:25
+ *
+ * @author steven
  */
 @Getter
 @ApiModel("请求设备类型对象枚举")
-public enum DeviceRequestEnum {
+public enum RequestDeviceEnum {
     //ios app
     @ApiModelProperty(value = "ios app")
     APP_IOS,

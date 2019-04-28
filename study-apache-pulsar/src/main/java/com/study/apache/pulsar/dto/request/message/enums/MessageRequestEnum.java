@@ -9,6 +9,8 @@ import lombok.Getter;
  * User:ChengLiang
  * Date:2019/4/26
  * Time:15:25
+ *
+ * @author steven
  */
 @Getter
 @ApiModel("消息类型枚举")

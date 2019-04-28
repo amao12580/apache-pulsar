@@ -11,6 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.pulsar.client.api.MessageId;
 import org.apache.pulsar.client.api.Producer;
 import org.apache.pulsar.client.api.PulsarClientException;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.nio.charset.Charset;
+import java.util.List;
 
 import static com.study.apache.pulsar.config.Constants.DEFAULT_PRODUCES;
 
@@ -40,18 +43,34 @@ public class MessageSendController {
     @Resource
     Producer<String> producer;
 
-    @ApiOperation(value = "发送一条消息", produces = DEFAULT_PRODUCES)
+    @ApiOperation(value = "发送单条消息", produces = DEFAULT_PRODUCES)
     @PostMapping(value = "/simple")
-    public BaseResponse<MessageResponseDto> send(@RequestBody @ApiParam(value = "消息发送请求参数", required = true) BaseRequest<MessageRequestDto> messageRequestDto) throws PulsarClientException {
+    public BaseResponse<MessageResponseDto> simple(@RequestBody @ApiParam(value = "消息发送请求参数", required = true) BaseRequest<MessageRequestDto> messageRequestDto) throws PulsarClientException {
         log.info("messageRequestDto:{}", messageRequestDto.toString());
         MessageRequestDto data = messageRequestDto.getBody().getData();
         log.info("data:{}", data.toString());
-        producer.send(JSON.toJSONString(data));
+        MessageId messageId = producer.newMessage().value(JSON.toJSONString(data)).send();
         log.info("numMsgsSent:{}", producer.getStats().getNumMsgsSent());
         log.info(producer.getProducerName());
         log.info(producer.getTopic());
         log.info("lastSequenceId:{}", producer.getLastSequenceId());
         return BaseResponse.newInstance(messageRequestDto, ResponseBody.success(new MessageResponseDto(
-                String.valueOf(System.currentTimeMillis()))));
+                new String(messageId.toByteArray(), Charset.forName("utf-8")))));
+    }
+
+    @ApiOperation(value = "批量发送消息", produces = DEFAULT_PRODUCES)
+    @PostMapping(value = "/batch")
+    public BaseResponse<Void> batch(@RequestBody @ApiParam(value = "消息发送请求参数", required = true) BaseRequest<List<MessageRequestDto>> messageRequestDto) {
+        log.info("messageRequestDto:{}", messageRequestDto.toString());
+        List<MessageRequestDto> dtos = messageRequestDto.getBody().getData();
+        for (MessageRequestDto data : dtos) {
+            log.info("data:{}", data.toString());
+            producer.newMessage().value(JSON.toJSONString(data)).sendAsync();
+        }
+        log.info("numMsgsSent:{}", producer.getStats().getNumMsgsSent());
+        log.info(producer.getProducerName());
+        log.info(producer.getTopic());
+        log.info("lastSequenceId:{}", producer.getLastSequenceId());
+        return BaseResponse.newInstance(messageRequestDto, ResponseBody.success());
     }
 }

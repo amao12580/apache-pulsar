@@ -40,6 +40,12 @@ public class ResponseBody<T> implements Serializable {
         return body;
     }
 
+    public static <M> ResponseBody<M> success() {
+        ResponseBody<M> body = new ResponseBody<>();
+        body.setCode("0");
+        return body;
+    }
+
     @Data
     @ApiModel("错误信息对象")
     class Error {

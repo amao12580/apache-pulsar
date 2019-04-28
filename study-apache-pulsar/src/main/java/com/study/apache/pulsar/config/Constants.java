@@ -13,6 +13,8 @@ import org.springframework.http.MediaType;
 public interface Constants {
     String SERVICE_URL = "pulsar://192.168.1.231:6650";
 
+    String SERVICE_ADMIN_URL = "http://192.168.1.231:18080";
+
     /**
      * 死信队列
      */

@@ -22,7 +22,7 @@ import java.util.Date;
 @Setter(AccessLevel.PACKAGE)
 @ToString
 @Builder
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ApiModel("基础的请求对象-头部")
 public class RequestHeader implements Serializable {

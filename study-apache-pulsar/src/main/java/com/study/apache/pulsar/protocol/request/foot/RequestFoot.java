@@ -18,7 +18,7 @@ import java.io.Serializable;
 @Setter(AccessLevel.PACKAGE)
 @ToString
 @Builder
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ApiModel("基础的请求对象-签名区")
 public class RequestFoot implements Serializable {

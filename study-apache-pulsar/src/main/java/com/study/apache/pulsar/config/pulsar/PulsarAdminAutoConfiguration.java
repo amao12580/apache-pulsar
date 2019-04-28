@@ -1,7 +1,7 @@
 package com.study.apache.pulsar.config.pulsar;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.pulsar.client.api.PulsarClient;
+import org.apache.pulsar.client.admin.PulsarAdmin;
 import org.apache.pulsar.client.api.PulsarClientException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.annotation.PreDestroy;
 import java.util.concurrent.TimeUnit;
 
-import static com.study.apache.pulsar.config.Constants.SERVICE_URL;
+import static com.study.apache.pulsar.config.Constants.SERVICE_ADMIN_URL;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,27 +21,23 @@ import static com.study.apache.pulsar.config.Constants.SERVICE_URL;
  */
 @Slf4j
 @Configuration
-public class PulsarAutoConfiguration {
-    private PulsarClient client;
+public class PulsarAdminAutoConfiguration {
+    private PulsarAdmin admin;
 
     @Bean
-    PulsarClient createPulsarClient() throws PulsarClientException {
-        client = PulsarClient.builder()
-                .serviceUrl(SERVICE_URL)
+    PulsarAdmin createPulsarAdmin() throws PulsarClientException {
+        admin = PulsarAdmin.builder()
+                .serviceHttpUrl(SERVICE_ADMIN_URL)
                 .connectionTimeout(3, TimeUnit.SECONDS)
                 .allowTlsInsecureConnection(true)
                 .build();
-        return client;
+        return admin;
     }
 
 
     @PreDestroy
     void close() {
-        log.info("关闭 PulsarClient");
-        try {
-            client.close();
-        } catch (PulsarClientException e) {
-            log.error(e.getMessage(), e);
-        }
+        log.info("关闭 PulsarAdmin");
+        admin.close();
     }
 }

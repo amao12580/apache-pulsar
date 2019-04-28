@@ -38,7 +38,7 @@ import static com.study.apache.pulsar.config.Constants.DEFAULT_PRODUCES;
 public class MessageSendController {
 
     @Resource
-    Producer<Object> producer;
+    Producer<String> producer;
 
     @ApiOperation(value = "发送一条消息", produces = DEFAULT_PRODUCES)
     @PostMapping(value = "/simple")

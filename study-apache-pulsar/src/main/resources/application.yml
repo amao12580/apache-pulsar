@@ -20,7 +20,7 @@ swagger:
 
 spring:
   jackson:
-    date-format: yyyy-MM-dd HH:mm:ss
+    date-format: yyyy-MM-dd HH:mm:ss.SSS
     default-property-inclusion: non_null
     timeZone: 'GMT+8'
     locale: 'zh'
@@ -35,3 +35,13 @@ management:
   endpoint:
     health:
       show-details: always
+
+
+
+logging:
+  path: 'logs/'
+  pattern:
+    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(${LOG_LEVEL_PATTERN:-%5p}) %boldMagenta(${PID:- }) %cyan(---){faint} %green([%thread]) %cyan(%logger{69}) %highlight([%method] [%L]) %cyan(:) %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}'
+  file:
+    max-history: 3
+    max-size: 50MB

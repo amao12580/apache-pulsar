@@ -1,5 +1,6 @@
 package com.study.apache.pulsar.protocol.response.header;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.study.apache.pulsar.protocol.common.algorithm.AlgorithmTypeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -30,6 +31,7 @@ public class ResponseHeader implements Serializable {
     String requestId;
     @ApiModelProperty(value = "数据加密算法类型", required = true, example = "SIMPLE", position = 3)
     AlgorithmTypeEnum algorithm;
-    @ApiModelProperty(value = "响应时间", required = true, example = "2019-04-28 06:08:15", position = 4)
+    @ApiModelProperty(value = "响应时间", required = true, example = "2019-04-28 06:08:15.582", position = 4)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS", locale = "zh", timezone = "GMT+8")
     Date timestamp;
 }

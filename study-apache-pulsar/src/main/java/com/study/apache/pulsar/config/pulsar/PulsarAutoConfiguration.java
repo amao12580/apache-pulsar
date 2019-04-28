@@ -1,16 +1,14 @@
-package com.study.apache.pulsar.pulsar;
+package com.study.apache.pulsar.config.pulsar;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.pulsar.client.api.Producer;
 import org.apache.pulsar.client.api.PulsarClient;
 import org.apache.pulsar.client.api.PulsarClientException;
-import org.apache.pulsar.client.impl.schema.JSONSchema;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PreDestroy;
 
-import static com.study.apache.pulsar.config.Constants.*;
+import static com.study.apache.pulsar.config.Constants.SERVICE_URL;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,8 +23,6 @@ import static com.study.apache.pulsar.config.Constants.*;
 public class PulsarAutoConfiguration {
     private PulsarClient client;
 
-    private Producer<Object> jsonMessageProducer;
-
     @Bean
     PulsarClient createPulsarClient() throws PulsarClientException {
         client = PulsarClient.builder()
@@ -36,22 +32,10 @@ public class PulsarAutoConfiguration {
         return client;
     }
 
-    @Bean
-    Producer<Object> createMessageRequestDtoProducer(PulsarClient client) throws PulsarClientException {
-        jsonMessageProducer = client.newProducer(JSONSchema.of(Object.class))
-                .topic(TOPIC)
-                .producerName(PRODUCER_NAME)
-                .create();
-        return jsonMessageProducer;
-    }
 
     @PreDestroy
     void close() {
-        try {
-            jsonMessageProducer.close();
-        } catch (PulsarClientException e) {
-            log.error(e.getMessage(), e);
-        }
+        log.info("关闭 PulsarClient");
         try {
             client.close();
         } catch (PulsarClientException e) {

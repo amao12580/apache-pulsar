@@ -1,4 +1,4 @@
-package com.study.apache.pulsar.controller;
+package com.study.apache.pulsar.controller.message;
 
 
 import com.alibaba.fastjson.JSON;
@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
+import static com.study.apache.pulsar.config.Constants.DEFAULT_PRODUCES;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,17 +32,17 @@ import javax.annotation.Resource;
  * @author steven
  */
 @Slf4j
-@Api(tags = "测试 produce")
+@Api(value = "发送消息控制器", tags = {"消息队列发送接口"})
 @RestController
-@RequestMapping("/produce")
-public class ProducerController {
+@RequestMapping("/message//queue/send")
+public class MessageSendController {
 
     @Resource
     Producer<Object> producer;
 
-    @ApiOperation(value = "发送一条消息")
+    @ApiOperation(value = "发送一条消息", produces = DEFAULT_PRODUCES)
     @PostMapping(value = "/simple")
-    public BaseResponse<MessageResponseDto> simple(@RequestBody @ApiParam(value = "消息发送请求对象", required = true) BaseRequest<MessageRequestDto> messageRequestDto) throws PulsarClientException {
+    public BaseResponse<MessageResponseDto> send(@RequestBody @ApiParam(value = "消息发送请求参数", required = true) BaseRequest<MessageRequestDto> messageRequestDto) throws PulsarClientException {
         log.info("messageRequestDto:{}", messageRequestDto.toString());
         MessageRequestDto data = messageRequestDto.getBody().getData();
         log.info("data:{}", data.toString());

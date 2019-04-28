@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,10 +25,12 @@ import java.io.Serializable;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ApiModel("基础的请求对象-头部")
 public class RequestHeader implements Serializable {
-    @ApiModelProperty(value = "请求唯一id", required = true, example = "2udu0whi5v1gygev")
+    @ApiModelProperty(value = "请求唯一id", required = true, example = "2udu0whi5v1gygev", position = 1)
     String id;
-    @ApiModelProperty(value = "请求设备类型", required = true, example = "APP_ANDROID_PAD")
+    @ApiModelProperty(value = "请求设备类型", required = true, example = "APP_ANDROID_PAD", position = 2)
     RequestDeviceEnum type;
-    @ApiModelProperty(value = "数据加密算法类型", required = true, example = "SIMPLE")
+    @ApiModelProperty(value = "数据加密算法类型", required = true, example = "SIMPLE", position = 3)
     AlgorithmTypeEnum algorithm;
+    @ApiModelProperty(value = "请求时间", required = true, example = "2019-04-28 06:08:15", position = 4)
+    Date timestamp;
 }

@@ -19,12 +19,12 @@ import lombok.EqualsAndHashCode;
 @Data
 @ApiModel("消息发送请求参数对象")
 public class MessageRequestDto extends RequestBody<MessageRequestDto> {
-    @ApiModelProperty(value = "消息类型", required = true, example = "SIMPLE")
+    @ApiModelProperty(value = "消息类型", required = true, example = "SIMPLE", position = 1)
     MessageRequestEnum type;
-    @ApiModelProperty(value = "消息接收者", required = true)
+    @ApiModelProperty(value = "消息接收者", required = true, example = "测试消息-接收者", position = 2)
     String destination;
-    @ApiModelProperty(value = "标题")
+    @ApiModelProperty(value = "标题", example = "测试消息-标题", position = 3)
     String title;
-    @ApiModelProperty(value = "内容", required = true)
+    @ApiModelProperty(value = "内容", required = true, example = "测试消息-内容", position = 4)
     String content;
 }

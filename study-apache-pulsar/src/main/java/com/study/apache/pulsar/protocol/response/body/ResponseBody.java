@@ -21,16 +21,16 @@ import java.io.Serializable;
 @NoArgsConstructor
 @ApiModel("基础的响应对象-数据区")
 public class ResponseBody<T> implements Serializable {
-    @ApiModelProperty(value = "返回码", required = true, example = "0，即成功")
+    @ApiModelProperty(value = "返回码", required = true, example = "0，即成功", position = 1)
     String code;
 
-    @ApiModelProperty(value = "返回码描述，在code不为零时有值")
+    @ApiModelProperty(value = "返回码描述，在code不为零时有值", position = 2)
     String message;
 
-    @ApiModelProperty(value = "业务数据内容")
+    @ApiModelProperty(value = "业务数据内容", position = 3)
     T data;
 
-    @ApiModelProperty(value = "错误信息")
+    @ApiModelProperty(value = "错误信息", position = 4)
     Error error;
 
     public static <M> ResponseBody<M> success(M data) {
@@ -43,9 +43,9 @@ public class ResponseBody<T> implements Serializable {
     @Data
     @ApiModel("错误信息对象")
     class Error {
-        @ApiModelProperty(value = "错误信息唯一Id", required = true, example = "2udu0whi5v1gygev")
+        @ApiModelProperty(value = "错误信息唯一Id", required = true, example = "2udu0whi5v1gygev", position = 1)
         String id;
-        @ApiModelProperty(value = "错误信息明细")
+        @ApiModelProperty(value = "错误信息明细", position = 2)
         Throwable cause;
     }
 }

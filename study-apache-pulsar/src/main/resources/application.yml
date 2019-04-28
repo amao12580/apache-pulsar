@@ -22,6 +22,8 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     default-property-inclusion: non_null
+    timeZone: 'GMT+8'
+    locale: 'zh'
 
 
 

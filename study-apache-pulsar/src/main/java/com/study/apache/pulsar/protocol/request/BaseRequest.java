@@ -24,12 +24,12 @@ import java.io.Serializable;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @ApiModel("基础的请求对象-协议区")
 public class BaseRequest<T> implements Serializable {
-    @ApiModelProperty(value = "数据头部", required = true)
+    @ApiModelProperty(value = "数据头部", required = true, position = 1)
     RequestHeader head;
 
-    @ApiModelProperty(value = "数据头部", required = true)
+    @ApiModelProperty(value = "数据内容", required = true, position = 2)
     RequestBody<T> body;
 
-    @ApiModelProperty(value = "数据头部", required = true)
+    @ApiModelProperty(value = "数据签名", required = true, position = 3)
     RequestFoot foot;
 }

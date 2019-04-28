@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -26,13 +27,13 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @ApiModel("基础的响应对象-协议区")
 public class BaseResponse<T> implements Serializable {
-    @ApiModelProperty(value = "数据头部", required = true)
+    @ApiModelProperty(value = "数据头部", required = true, position = 1)
     ResponseHeader head;
 
-    @ApiModelProperty(value = "数据头部", required = true)
+    @ApiModelProperty(value = "数据内容", required = true, position = 2)
     ResponseBody<T> body;
 
-    @ApiModelProperty(value = "数据头部", required = true)
+    @ApiModelProperty(value = "数据签名", required = true, position = 3)
     ResponseFoot foot;
 
     public static <M> BaseResponse<M> newInstance(BaseRequest request, ResponseBody<M> data) {
@@ -41,6 +42,7 @@ public class BaseResponse<T> implements Serializable {
                 .id(UUID.randomUUID().toString())
                 .algorithm(request.getHead().getAlgorithm())
                 .requestId(request.getHead().getId())
+                .timestamp(new Date())
                 .build());
         response.setBody(data);
         response.setFoot(ResponseFoot.builder()

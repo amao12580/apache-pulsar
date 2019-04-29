@@ -10,6 +10,8 @@ import lombok.*;
 import java.io.Serializable;
 import java.util.Date;
 
+import static com.study.apache.pulsar.config.Constants.*;
+
 /**
  * Created with IntelliJ IDEA.
  * User:ChengLiang
@@ -19,11 +21,11 @@ import java.util.Date;
  * @author steven
  */
 @Getter
-@Setter(AccessLevel.PACKAGE)
+@Setter
 @ToString
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @ApiModel("基础的请求对象-头部")
 public class RequestHeader implements Serializable {
     @ApiModelProperty(value = "请求唯一id", required = true, example = "2udu0whi5v1gygev", position = 1)
@@ -33,6 +35,6 @@ public class RequestHeader implements Serializable {
     @ApiModelProperty(value = "数据加密算法类型", required = true, example = "SIMPLE", position = 3)
     AlgorithmTypeEnum algorithm;
     @ApiModelProperty(value = "请求时间", required = true, example = "2019-04-28 06:08:15.245", position = 4)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS", locale = "zh", timezone = "GMT+8")
+    @JsonFormat(pattern = DATE_FORMAT_FULL, locale = LOCALE_DEFAULT, timezone = TIMEZONE_DEFAULT)
     Date timestamp;
 }

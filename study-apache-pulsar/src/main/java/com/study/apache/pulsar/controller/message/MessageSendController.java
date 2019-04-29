@@ -36,7 +36,7 @@ import static com.study.apache.pulsar.config.Constants.DEFAULT_PRODUCES;
 @Slf4j
 @Api(value = "发送消息控制器", tags = {"消息队列发送接口"})
 @RestController
-@RequestMapping("/message//queue/send")
+@RequestMapping("/message/queue/send")
 public class MessageSendController {
 
     @Resource

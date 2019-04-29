@@ -9,6 +9,8 @@ import lombok.*;
 import java.io.Serializable;
 import java.util.Date;
 
+import static com.study.apache.pulsar.config.Constants.*;
+
 /**
  * Created with IntelliJ IDEA.
  * User:ChengLiang
@@ -32,6 +34,6 @@ public class ResponseHeader implements Serializable {
     @ApiModelProperty(value = "数据加密算法类型", required = true, example = "SIMPLE", position = 3)
     AlgorithmTypeEnum algorithm;
     @ApiModelProperty(value = "响应时间", required = true, example = "2019-04-28 06:08:15.582", position = 4)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS", locale = "zh", timezone = "GMT+8")
+    @JsonFormat(pattern = DATE_FORMAT_FULL, locale = LOCALE_DEFAULT, timezone = TIMEZONE_DEFAULT)
     Date timestamp;
 }

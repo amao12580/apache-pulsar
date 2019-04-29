@@ -15,11 +15,11 @@ import java.io.Serializable;
  * @author steven
  */
 @Getter
-@Setter(AccessLevel.PACKAGE)
+@Setter
 @ToString
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @ApiModel("基础的请求对象-签名区")
 public class RequestFoot implements Serializable {
     @ApiModelProperty(value = "数据签名", required = true, example = "md5:ts4w2oto5kqwpg6fmsyvyd2tl3m9yqg4pz0ecd8hm9lpba77yu2ff4jglp3hx7ki")

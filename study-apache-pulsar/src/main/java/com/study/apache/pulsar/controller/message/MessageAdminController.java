@@ -31,7 +31,7 @@ import static com.study.apache.pulsar.config.Constants.DEFAULT_PRODUCES;
 @Slf4j
 @Api(value = "消息管理控制器", tags = {"消息队列管理接口"})
 @RestController
-@RequestMapping("/message//queue/admin")
+@RequestMapping("/message/queue/admin")
 public class MessageAdminController {
 
     @Resource
@@ -39,8 +39,8 @@ public class MessageAdminController {
 
     @ApiOperation(value = "查询所有租户信息", produces = DEFAULT_PRODUCES)
     @GetMapping(value = "/tenants")
-    public BaseResponse<List<String>> tenants(@ApiParam(value = "查询请求参数", required = true) BaseRequest<Void> params) throws PulsarAdminException {
-//        admin.tenants().createTenant("001", TenantInfo);
-        return BaseResponse.newInstance(params, ResponseBody.success(admin.tenants().getTenants()));
+    public BaseResponse<List<String>> tenants(@ApiParam(value = "查询请求参数", required = true) BaseRequest<Void> param) throws PulsarAdminException {
+        log.info("param:{}", param.toString());
+        return BaseResponse.newInstance(param, ResponseBody.success(admin.tenants().getTenants()));
     }
 }

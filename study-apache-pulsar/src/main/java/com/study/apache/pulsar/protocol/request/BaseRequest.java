@@ -18,10 +18,10 @@ import java.io.Serializable;
  * @author steven
  */
 @Getter
-@Setter(AccessLevel.PACKAGE)
+@Setter
 @ToString
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
+@NoArgsConstructor
 @ApiModel("基础的请求对象-协议区")
 public class BaseRequest<T> implements Serializable {
     @ApiModelProperty(value = "数据头部", required = true, position = 1)

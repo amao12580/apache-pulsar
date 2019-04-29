@@ -15,9 +15,9 @@ import java.io.Serializable;
  * @author steven
  */
 @Getter
-@Setter(AccessLevel.PACKAGE)
+@Setter
 @ToString
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @NoArgsConstructor
 @ApiModel("基础的请求对象-数据区")
 public class RequestBody<T> implements Serializable {

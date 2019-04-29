@@ -9,13 +9,17 @@ swagger:
       description: "鉴权参数"
       parameterType: "header"
       modelRef: "string"
-      required: "true"
+      #      required: "true"
+      required: "false"
 
     - name: "x-tenant-id"
       description: "租户参数"
       parameterType: "header"
       modelRef: "string"
-      required: "true"
+      #      required: "true"
+      required: "false"
+#  authorization:
+#    name: Authorization
 
 
 spring:

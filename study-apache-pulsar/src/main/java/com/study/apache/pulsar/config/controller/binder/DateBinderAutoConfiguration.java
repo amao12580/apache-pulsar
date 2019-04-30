@@ -1,15 +1,15 @@
 package com.study.apache.pulsar.config.controller.binder;
 
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.InitBinder;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
-import static com.study.apache.pulsar.config.Constants.DATE_FORMAT_FULL;
-import static com.study.apache.pulsar.config.Constants.LOCALE_INSTANCE_DEFAULT;
+import static com.study.apache.pulsar.config.Constants.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,12 +19,13 @@ import static com.study.apache.pulsar.config.Constants.LOCALE_INSTANCE_DEFAULT;
  *
  * @author:steven
  */
-@ControllerAdvice
-public class DateBinder {
+@Configuration
+public class DateBinderAutoConfiguration {
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_FULL, LOCALE_INSTANCE_DEFAULT);
         dateFormat.setLenient(false);
+        dateFormat.setTimeZone(TimeZone.getTimeZone(TIMEZONE_DEFAULT));
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
     }
 }

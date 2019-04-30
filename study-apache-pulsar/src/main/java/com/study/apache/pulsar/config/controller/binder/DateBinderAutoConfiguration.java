@@ -31,6 +31,6 @@ public class DateBinderAutoConfiguration {
         dateFormat.setLenient(false);
         dateFormat.setTimeZone(TimeZone.getTimeZone(TIMEZONE_DEFAULT));
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
-        log.info("DateBinder has completed.");
+        log.debug("DateBinder has completed.");
     }
 }

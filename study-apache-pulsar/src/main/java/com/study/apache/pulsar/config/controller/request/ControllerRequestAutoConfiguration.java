@@ -70,7 +70,7 @@ class ControllerRequestAutoConfiguration {
             baseRequest.setHead(request.getHead());
             baseRequest.setBody(request.getBody());
             baseRequest.setFoot(request.getFoot());
-            log.info(baseRequest.toString());
+            log.debug(baseRequest.toString());
         }
     }
 }

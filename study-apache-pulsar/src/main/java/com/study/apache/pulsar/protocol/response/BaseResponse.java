@@ -1,5 +1,6 @@
 package com.study.apache.pulsar.protocol.response;
 
+import com.study.apache.pulsar.protocol.common.algorithm.AlgorithmTypeEnum;
 import com.study.apache.pulsar.protocol.request.BaseRequest;
 import com.study.apache.pulsar.protocol.response.body.ResponseBody;
 import com.study.apache.pulsar.protocol.response.foot.ResponseFoot;
@@ -40,8 +41,8 @@ public class BaseResponse<T> implements Serializable {
         BaseResponse<M> response = new BaseResponse<>();
         response.setHead(ResponseHeader.builder()
                 .id(UUID.randomUUID().toString())
-                .algorithm(request.getHead().getAlgorithm())
-                .requestId(request.getHead().getId())
+                .algorithm(request == null || request.getHead() == null ? AlgorithmTypeEnum.SIMPLE : request.getHead().getAlgorithm())
+                .requestId(request == null || request.getHead() == null ? null : request.getHead().getId())
                 .timestamp(new Date())
                 .build());
         response.setBody(data);

@@ -38,10 +38,6 @@ public class PulsarAutoConfiguration {
     @PreDestroy
     void close() {
         log.info("关闭 PulsarClient");
-        try {
-            client.close();
-        } catch (PulsarClientException e) {
-            log.error(e.getMessage(), e);
-        }
+        client.closeAsync();
     }
 }

@@ -1,9 +1,11 @@
 package com.study.apache.pulsar.config.controller.binder;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,6 +21,8 @@ import static com.study.apache.pulsar.config.Constants.*;
  *
  * @author:steven
  */
+@Slf4j
+@RestControllerAdvice
 @Configuration
 public class DateBinderAutoConfiguration {
     @InitBinder
@@ -27,5 +31,6 @@ public class DateBinderAutoConfiguration {
         dateFormat.setLenient(false);
         dateFormat.setTimeZone(TimeZone.getTimeZone(TIMEZONE_DEFAULT));
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+        log.info("DateBinder has completed.");
     }
 }

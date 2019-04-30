@@ -47,6 +47,17 @@ public class MessageAdminController {
                         .build()));
     }
 
+    @ApiOperation(value = "查询所有集群信息", produces = DEFAULT_PRODUCES)
+    @GetMapping(value = "clusters")
+    public BaseResponse<AllTenantsListResponseDto> queryAllCluster(@ApiParam(value = "查询请求参数", required = true) BaseRequest<Void> param) throws PulsarAdminException {
+        log.info("param:{}", param.toString());
+        return BaseResponse.newInstance(param, ResponseBody
+                .success(AllTenantsListResponseDto
+                        .builder()
+                        .name(admin.clusters().getClusters())
+                        .build()));
+    }
+
 
     @ApiOperation(value = "添加一个租户", produces = DEFAULT_PRODUCES)
     @PostMapping(value = "tenant")

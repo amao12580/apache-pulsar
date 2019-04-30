@@ -36,9 +36,6 @@ public class MessageAdminController {
     @Resource
     PulsarAdmin admin;
 
-//    @Resource
-//    Validator validator;
-
     @ApiOperation(value = "查询所有租户信息", produces = DEFAULT_PRODUCES)
     @GetMapping(value = "tenants")
     public BaseResponse<AllTenantsListResponseDto> queryAllTenant(@ApiParam(value = "查询请求参数", required = true) BaseRequest<Void> param) throws PulsarAdminException {
@@ -56,11 +53,6 @@ public class MessageAdminController {
     public BaseResponse<Boolean> addTenant(@RequestBody @ApiParam(value = "添加租户请求参数", required = true) BaseRequest<AddTenantRequestDto> addTenantRequestDto) throws PulsarAdminException {
         log.info("addTenantRequestDto:{}", addTenantRequestDto.toString());
         AddTenantRequestDto addTenantInfo = addTenantRequestDto.getBody().getData();
-//        Set<ConstraintViolation<AddTenantRequestDto>> validate = validator.validate(addTenantInfo);
-//        validate.forEach(violation -> {
-//            log.error(violation.getMessage());
-//            throw new BadRequestException(violation.getMessage());
-//        });
         if (admin.tenants().getTenants().contains(addTenantInfo.getName())) {
             throw new IllegalArgumentException("tenant " + addTenantInfo.getName() + " already existed.");
         }

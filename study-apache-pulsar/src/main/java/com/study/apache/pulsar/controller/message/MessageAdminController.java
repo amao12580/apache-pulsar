@@ -2,6 +2,7 @@ package com.study.apache.pulsar.controller.message;
 
 
 import com.study.apache.pulsar.dto.request.tenant.AddTenantRequestDto;
+import com.study.apache.pulsar.dto.request.tenant.DeleteTenantRequestDto;
 import com.study.apache.pulsar.dto.response.tenant.AllTenantsListResponseDto;
 import com.study.apache.pulsar.protocol.request.BaseRequest;
 import com.study.apache.pulsar.protocol.response.BaseResponse;
@@ -12,9 +13,14 @@ import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.admin.PulsarAdmin;
 import org.apache.pulsar.client.admin.PulsarAdminException;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static com.study.apache.pulsar.config.Constants.DEFAULT_PRODUCES;
 
@@ -59,15 +65,33 @@ public class MessageAdminController {
     }
 
 
-    @ApiOperation(value = "添加一个租户", produces = DEFAULT_PRODUCES)
+    @ApiOperation(value = "保存一个租户", produces = DEFAULT_PRODUCES)
     @PostMapping(value = "tenant")
-    public BaseResponse<Boolean> addTenant(@RequestBody @ApiParam(value = "添加租户请求参数", required = true) BaseRequest<AddTenantRequestDto> addTenantRequestDto) throws PulsarAdminException {
+    public BaseResponse<Boolean> addTenant(@RequestBody @ApiParam(value = "保存租户请求参数", required = true) BaseRequest<AddTenantRequestDto> addTenantRequestDto) throws PulsarAdminException {
         log.info("addTenantRequestDto:{}", addTenantRequestDto.toString());
         AddTenantRequestDto addTenantInfo = addTenantRequestDto.getBody().getData();
         if (admin.tenants().getTenants().contains(addTenantInfo.getName())) {
-            throw new IllegalArgumentException("tenant " + addTenantInfo.getName() + " already existed.");
+            admin.tenants().updateTenant(addTenantInfo.getName(), addTenantInfo.getInfo());
+        } else {
+            admin.tenants().createTenant(addTenantInfo.getName(), addTenantInfo.getInfo());
         }
-        admin.tenants().createTenant(addTenantInfo.getName(), addTenantInfo.getInfo());
         return BaseResponse.newInstance(addTenantRequestDto, ResponseBody.success(admin.tenants().getTenants().contains(addTenantInfo.getName())));
+    }
+
+    @ApiOperation(value = "删除多个租户", produces = DEFAULT_PRODUCES)
+    @DeleteMapping(value = "tenant")
+    public BaseResponse<Boolean> deleteTenant(@RequestBody @ApiParam(value = "删除租户请求参数", required = true) BaseRequest<DeleteTenantRequestDto> deleteTenantRequestDto) throws PulsarAdminException {
+        log.info("deleteTenantRequestDto:{}", deleteTenantRequestDto.toString());
+        DeleteTenantRequestDto deleteTenant = deleteTenantRequestDto.getBody().getData();
+        Set<String> names = deleteTenant.getName();
+        List<String> deletedNames = new ArrayList<>(names.size());
+        Set<String> existed = new HashSet<>(admin.tenants().getTenants());
+        for (String name : names) {
+            if (!StringUtils.isEmpty(name) && existed.contains(name)) {
+                admin.tenants().deleteTenant(name);
+                deletedNames.add(name);
+            }
+        }
+        return BaseResponse.newInstance(deleteTenantRequestDto, ResponseBody.success(deletedNames.isEmpty() || !admin.tenants().getTenants().containsAll(deletedNames)));
     }
 }

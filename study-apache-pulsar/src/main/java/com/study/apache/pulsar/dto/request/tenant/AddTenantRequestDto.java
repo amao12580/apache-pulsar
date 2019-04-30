@@ -24,7 +24,7 @@ import javax.validation.constraints.NotNull;
 @ApiModel("添加租户请求参数对象")
 public class AddTenantRequestDto extends RequestBody<AddTenantRequestDto> {
     @NotBlank
-    @Length(min = 1, max = 10, message = "名称的长度，需要在1-10之间")
+    @Length(min = 1, max = 11, message = "名称的长度，需要在1-10之间")
     @ApiModelProperty(value = "名称", required = true, example = "test", position = 1)
     String name;
 

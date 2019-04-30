@@ -5,6 +5,7 @@ package com.study.apache.pulsar.config;
  * User:ChengLiang
  * Date:2018/7/3
  * Time:10:27
+ *
  * @author steven
  */
 public interface AspectjOrder {

@@ -32,7 +32,7 @@ public class ExceptionResponseAutoConfiguration {
     @ExceptionHandler({BadRequestException.class, IllegalArgumentException.class})
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public BaseResponse paramInvalid(Exception cause) {
-        log.error(baseRequest.toString() + "," + cause.getMessage(), cause);
+        log.error(cause.getMessage(), cause);
         return BaseResponse.newInstance(baseRequest, ResponseBody.failed(ErrorCodeEnum.PARAM_INVALID, cause.getMessage(), cause));
     }
 
@@ -40,7 +40,7 @@ public class ExceptionResponseAutoConfiguration {
     @ExceptionHandler({Throwable.class})
     @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
     public BaseResponse defaultHandler(Throwable cause) {
-        log.error(baseRequest.toString() + "," + cause.getMessage(), cause);
+        log.error(cause.getMessage(), cause);
         return BaseResponse.newInstance(baseRequest, ResponseBody.failed(ErrorCodeEnum.UNKNOWN_ERROR, cause.getMessage(), cause));
     }
 }

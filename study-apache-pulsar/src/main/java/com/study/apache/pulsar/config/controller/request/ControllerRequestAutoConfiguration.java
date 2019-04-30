@@ -70,7 +70,7 @@ class ControllerRequestAutoConfiguration {
             baseRequest.setHead(request.getHead());
             baseRequest.setBody(request.getBody());
             baseRequest.setFoot(request.getFoot());
-            log.info("current baseRequest has auto updated.");
+            log.info(baseRequest.toString());
         }
     }
 }

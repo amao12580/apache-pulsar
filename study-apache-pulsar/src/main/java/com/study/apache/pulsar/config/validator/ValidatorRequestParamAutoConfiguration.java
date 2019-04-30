@@ -52,25 +52,6 @@ class ValidatorRequestParamAutoConfiguration {
         private void pointcut() {
         }
 
-        @Before("pointcut()")
-        private void check(JoinPoint joinPoint) {
-            if (joinPoint == null) {
-                return;
-            }
-            Object[] args = joinPoint.getArgs();
-            if (args == null || args.length == 0) {
-                return;
-            }
-            Object obj;
-            for (Object arg : args) {
-                obj = arg;
-                if (obj instanceof BaseRequest) {
-                    doCheck((BaseRequest) obj);
-                }
-            }
-        }
-
-
         @Around("pointcut()")
         private Object check(ProceedingJoinPoint joinPoint) throws Throwable {
             if (joinPoint == null) {

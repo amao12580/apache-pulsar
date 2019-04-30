@@ -5,8 +5,9 @@ package com.study.apache.pulsar.config;
  * User:ChengLiang
  * Date:2018/7/3
  * Time:10:27
+ * @author steven
  */
 public interface AspectjOrder {
-    int REQUEST = 9;
-    int VALIDATOR = 10;
+    int REQUEST = 1;
+    int VALIDATOR = 2;
 }

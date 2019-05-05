@@ -5,8 +5,9 @@ import com.study.apache.pulsar.protocol.response.BaseResponse;
 import com.study.apache.pulsar.protocol.response.body.ResponseBody;
 import com.study.apache.pulsar.protocol.response.body.error.enums.ErrorCodeEnum;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.pulsar.client.admin.PulsarAdminException;
+import org.apache.pulsar.client.api.PulsarClientException;
 import org.apache.pulsar.shade.javax.ws.rs.BadRequestException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,12 +27,22 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ExceptionResponseAutoConfiguration {
 
-    @Autowired
-    BaseRequest baseRequest;
+    private final BaseRequest baseRequest;
+
+    public ExceptionResponseAutoConfiguration(BaseRequest baseRequest) {
+        this.baseRequest = baseRequest;
+    }
 
     @ExceptionHandler({BadRequestException.class, IllegalArgumentException.class})
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public BaseResponse paramInvalid(Exception cause) {
+        log.error(cause.getMessage(), cause);
+        return BaseResponse.newInstance(baseRequest, ResponseBody.failed(ErrorCodeEnum.PARAM_INVALID, cause.getMessage(), cause));
+    }
+
+    @ExceptionHandler({PulsarClientException.NotFoundException.class, PulsarAdminException.NotFoundException.class})
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    public BaseResponse notFound(Exception cause) {
         log.error(cause.getMessage(), cause);
         return BaseResponse.newInstance(baseRequest, ResponseBody.failed(ErrorCodeEnum.PARAM_INVALID, cause.getMessage(), cause));
     }

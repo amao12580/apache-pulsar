@@ -28,6 +28,8 @@ spring:
     default-property-inclusion: non_null
     timeZone: 'GMT+8'
     locale: 'zh'
+    serialization:
+      FAIL_ON_EMPTY_BEANS: 'false'
 
 
 

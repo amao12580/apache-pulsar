@@ -3,7 +3,11 @@ package com.study.apache.pulsar.controller.message;
 
 import com.study.apache.pulsar.dto.request.tenant.AddTenantRequestDto;
 import com.study.apache.pulsar.dto.request.tenant.DeleteTenantRequestDto;
+import com.study.apache.pulsar.dto.response.broker.AllActiveBrokersListResponseDto;
+import com.study.apache.pulsar.dto.response.namespace.AllNamespacesListResponseDto;
+import com.study.apache.pulsar.dto.response.schema.SchemaResponseDto;
 import com.study.apache.pulsar.dto.response.tenant.AllTenantsListResponseDto;
+import com.study.apache.pulsar.dto.response.topic.AllTopicsListResponseDto;
 import com.study.apache.pulsar.protocol.request.BaseRequest;
 import com.study.apache.pulsar.protocol.response.BaseResponse;
 import com.study.apache.pulsar.protocol.response.body.ResponseBody;
@@ -61,6 +65,50 @@ public class MessageAdminController {
                 .success(AllTenantsListResponseDto
                         .builder()
                         .name(admin.clusters().getClusters())
+                        .build()));
+    }
+
+    @ApiOperation(value = "查询所有命名空间信息", produces = DEFAULT_PRODUCES)
+    @GetMapping(value = "namespaces")
+    public BaseResponse<AllNamespacesListResponseDto> queryAllNamespace(@ApiParam(value = "查询请求参数,租户名称", required = true) BaseRequest<String> param) throws PulsarAdminException {
+        log.info("param:{}", param.toString());
+        return BaseResponse.newInstance(param, ResponseBody
+                .success(AllNamespacesListResponseDto
+                        .builder()
+                        .name(param.getBody().getData() == null ? null : admin.namespaces().getNamespaces(param.getBody().getData()))
+                        .build()));
+    }
+
+    @ApiOperation(value = "查询所有topic信息", produces = DEFAULT_PRODUCES)
+    @GetMapping(value = "topics")
+    public BaseResponse<AllTopicsListResponseDto> queryAllTopic(@ApiParam(value = "查询请求参数,namespace名称", required = true) BaseRequest<String> param) throws PulsarAdminException {
+        log.info("param:{}", param.toString());
+        return BaseResponse.newInstance(param, ResponseBody
+                .success(AllTopicsListResponseDto
+                        .builder()
+                        .name(param.getBody().getData() == null ? null : admin.topics().getList(param.getBody().getData()))
+                        .build()));
+    }
+
+    @ApiOperation(value = "查询所有schema信息", produces = DEFAULT_PRODUCES)
+    @GetMapping(value = "schema")
+    public BaseResponse<SchemaResponseDto> querySchema(@ApiParam(value = "查询请求参数,topic名称", required = true) BaseRequest<String> param) throws PulsarAdminException {
+        log.info("param:{}", param.toString());
+        return BaseResponse.newInstance(param, ResponseBody
+                .success(SchemaResponseDto
+                        .builder()
+                        .schema(param.getBody().getData() == null ? null : admin.schemas().getSchemaInfo(param.getBody().getData()))
+                        .build()));
+    }
+
+    @ApiOperation(value = "查询所有active broker信息", produces = DEFAULT_PRODUCES)
+    @GetMapping(value = "broker")
+    public BaseResponse<AllActiveBrokersListResponseDto> queryActiveBroker(@ApiParam(value = "查询请求参数,cluster名称", required = true) BaseRequest<String> param) throws PulsarAdminException {
+        log.info("param:{}", param.toString());
+        return BaseResponse.newInstance(param, ResponseBody
+                .success(AllActiveBrokersListResponseDto
+                        .builder()
+                        .name(param.getBody().getData() == null ? null : admin.brokers().getActiveBrokers(param.getBody().getData()))
                         .build()));
     }
 

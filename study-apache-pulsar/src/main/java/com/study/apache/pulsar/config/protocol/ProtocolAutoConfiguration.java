@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.web.context.WebApplicationContext;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,9 +20,9 @@ import org.springframework.context.annotation.ScopedProxyMode;
 @Configuration
 public class ProtocolAutoConfiguration {
     @Bean
-    @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
-    BaseRequest createBaseRequest() {
+    @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
+    BaseRequest<Object> createBaseRequest() {
         log.debug("BaseRequest created.");
-        return new BaseRequest();
+        return new BaseRequest<>();
     }
 }

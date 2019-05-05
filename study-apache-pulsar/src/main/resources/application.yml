@@ -51,3 +51,14 @@ logging:
   file:
     max-history: 3
     max-size: 50MB
+  level:
+    root: debug
+    springfox:
+      bean: info
+      documentation: info
+    org:
+      springframework: info
+      apache: info
+      hibernate: info
+    sun:
+      rmi: info

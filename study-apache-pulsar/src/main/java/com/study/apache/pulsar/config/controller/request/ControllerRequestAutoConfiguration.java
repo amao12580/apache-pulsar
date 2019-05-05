@@ -7,11 +7,13 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,8 +28,8 @@ import org.springframework.stereotype.Component;
 @Configuration
 class ControllerRequestAutoConfiguration {
 
-    @Autowired
-    BaseRequest baseRequest;
+    @Resource
+    BaseRequest<Object> baseRequest;
 
     @Aspect
     @Order(AspectjOrder.REQUEST)
@@ -55,11 +57,9 @@ class ControllerRequestAutoConfiguration {
             if (args == null || args.length == 0) {
                 return joinPoint.proceed();
             }
-            Object obj;
             for (Object arg : args) {
-                obj = arg;
-                if (obj instanceof BaseRequest) {
-                    bind((BaseRequest) obj);
+                if (arg instanceof BaseRequest) {
+                    bind((BaseRequest) arg);
                     break;
                 }
             }
@@ -67,9 +67,7 @@ class ControllerRequestAutoConfiguration {
         }
 
         private void bind(BaseRequest request) {
-            baseRequest.setHead(request.getHead());
-            baseRequest.setBody(request.getBody());
-            baseRequest.setFoot(request.getFoot());
+            BeanUtils.copyProperties(request, baseRequest);
             log.debug(baseRequest.toString());
         }
     }

@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.annotation.Resource;
+
 /**
  * Created with IntelliJ IDEA.
  * User:ChengLiang
@@ -27,11 +29,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ExceptionResponseAutoConfiguration {
 
-    private final BaseRequest baseRequest;
-
-    public ExceptionResponseAutoConfiguration(BaseRequest baseRequest) {
-        this.baseRequest = baseRequest;
-    }
+    @Resource
+    private BaseRequest baseRequest;
 
     @ExceptionHandler({BadRequestException.class, IllegalArgumentException.class})
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)

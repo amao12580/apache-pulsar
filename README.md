@@ -20,7 +20,7 @@ Pulsar之所以能够称为下一代消息队列，主要是因为以下特性:
 
 7.易于监控。原生支持与prometheus集成，[http://ip:8080/metrics/](http://192.168.1.1:8080/metrics/)，监控内容包括：JVM、ZooKeeper、jetty、topic、producer、consumer
 
-Topic支持多种消费模式：exclusive(独占消费)、shared(共享消费)、failover(失效消费)，同时支持Partition
+Topic支持多种消费模式：exclusive(独占消费)、shared(共享消费)、fail-over(灾备消费)，同时支持Partition
 
 producer支持批量生产-延迟投递模式，自定义路由类型(同一namespace下)，消息压缩，消息发送加密，自动分区，异步发送
 
@@ -44,4 +44,22 @@ Client端 主要提供了PulsarClient、Consumer、Producer的定义和消息收
 
 Admin端 主要提供了tenant、namespace、cluster、broker、function、permission、topic、schema的管理
 
-### spring boot 2.1.4.RELEASE
+## 解决方案
+Pulsar 虽然提供了多租户的管理功能，但目前的Java client库比较简陋，没有做连接池，影响整体效率，可以引入Apache common pool解决。
+
+新增租户，无法批量复制已有的topics，并建立好收发监听channel，也就是缺少了服务注册与服务发现的功能，可以引入zookeeper，配合植入zk client解决。
+
+### 为Client引入common pool
+在Client端，使用TCP调用Pulsar 接口，每次重新建立链接，完成消息收发。这部分的操作频率很高，需要使用连接池。
+
+对于Admin Client端，使用了同步HTTP Restful调用Pulsar 接口，每次重新建立链接，完成管理。由于操作频率很低，并且可以限流调用，不考虑使用连接池。
+
+#### 使用GenericKeyedObjectPool进行对象复用
+
+### 为Client引入ZooKeeper
+Client端，包括producer、consumer，在完成启动后，第一时间监听不同的zk永久节点，获取可用租户列表，以及每个租户分配的namespace、topics，自动建立连接池
+
+Admin Client端，开放租户管理接口，在完成租户管理后(新增、删除、扩容、缩减、配额)，对指定zk节点进行写入，Client端会监听到变化，自动处理连接池创建销毁。
+
+为防止短时间内zk数据反复变化，造成连接池剧烈波动，进而导致服务不可用，需要在Admin Client端控制zk读写频率。
+

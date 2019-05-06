@@ -20,13 +20,13 @@ Pulsar之所以能够称为下一代消息队列，主要是因为以下特性:
 
 7.易于监控。原生支持与prometheus集成，[http://ip:8080/metrics/](http://192.168.1.1:8080/metrics/)，监控内容包括：JVM、ZooKeeper、jetty、topic、producer、consumer
 
-Topic支持多种消费模式:exclusive(独占消费)、shared(共享消费)、failover(失效消费)，同时支持Partition
+Topic支持多种消费模式：exclusive(独占消费)、shared(共享消费)、failover(失效消费)，同时支持Partition
 
-producer支持批量生产-延迟投递模式，自定义路由类型(同一namespace下)，消息压缩，消息发送加密，自动分区
+producer支持批量生产-延迟投递模式，自定义路由类型(同一namespace下)，消息压缩，消息发送加密，自动分区，异步发送
 
-consumer支持批量消费-批量确认模式，自动重试，故障转移，死信队列，消息，自定义路由类型(同一namespace下)，消息发送加密
+consumer支持批量消费-批量确认模式，自动重试，故障转移，死信队列，pattern topics，异步消费，消息清理
 
-安全方面，消息支持端到端的加密，
+安全方面，消息支持端到端的加密，集群与租户的ACL，数据存储隔离
 
 ## 协议标准支持情况
 1.不支持AMQP协议

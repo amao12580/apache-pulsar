@@ -4,8 +4,7 @@ import com.study.apache.pulsar.dto.request.message.enums.MessageRequestEnum;
 import com.study.apache.pulsar.protocol.request.body.RequestBody;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,7 +15,12 @@ import lombok.EqualsAndHashCode;
  * @author steven
  */
 @EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @ApiModel("消息发送请求参数对象")
 public class MessageRequestDto extends RequestBody<MessageRequestDto> {
     @ApiModelProperty(value = "消息类型", required = true, example = "SIMPLE", position = 1)

@@ -39,4 +39,12 @@ public class BaseRequest<T> implements Serializable {
     @Valid
     @ApiModelProperty(value = "数据签名", required = true, position = 3)
     RequestFoot foot;
+
+    public static <M> BaseRequest<M> newInstance(RequestHeader head, RequestBody<M> body, RequestFoot foot) {
+        BaseRequest<M> request = new BaseRequest<>();
+        request.setHead(head);
+        request.setBody(body);
+        request.setFoot(foot);
+        return request;
+    }
 }

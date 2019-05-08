@@ -1,6 +1,7 @@
 package com.study.apache.pulsar.config.base;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
@@ -23,5 +24,11 @@ public class BaseAutoConfiguration {
     void timezone() {
         TimeZone.setDefault(TimeZone.getTimeZone(TIMEZONE_DEFAULT));
         log.info("timezone set to " + TIMEZONE_DEFAULT);
+    }
+
+    @Bean
+    public SpringApplicationContextHolder springContextHolder() {
+        log.info("SpringApplicationContextHolder is ready to inject.");
+        return new SpringApplicationContextHolder();
     }
 }

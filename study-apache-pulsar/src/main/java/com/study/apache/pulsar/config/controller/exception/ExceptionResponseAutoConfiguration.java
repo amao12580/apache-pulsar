@@ -36,14 +36,14 @@ public class ExceptionResponseAutoConfiguration {
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public BaseResponse paramInvalid(Exception cause) {
         log.error(cause.getMessage(), cause);
-        return BaseResponse.newInstance(baseRequest, ResponseBody.failed(ErrorCodeEnum.PARAM_INVALID, cause.getMessage(), cause));
+        return BaseResponse.newInstance(ResponseBody.failed(ErrorCodeEnum.PARAM_INVALID, cause.getMessage(), cause));
     }
 
     @ExceptionHandler({PulsarClientException.NotFoundException.class, PulsarAdminException.NotFoundException.class})
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
     public BaseResponse notFound(Exception cause) {
         log.error(cause.getMessage(), cause);
-        return BaseResponse.newInstance(baseRequest, ResponseBody.failed(ErrorCodeEnum.PARAM_INVALID, cause.getMessage(), cause));
+        return BaseResponse.newInstance(ResponseBody.failed(ErrorCodeEnum.PARAM_INVALID, cause.getMessage(), cause));
     }
 
 
@@ -51,6 +51,6 @@ public class ExceptionResponseAutoConfiguration {
     @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
     public BaseResponse defaultHandler(Throwable cause) {
         log.error(cause.getMessage(), cause);
-        return BaseResponse.newInstance(baseRequest, ResponseBody.failed(ErrorCodeEnum.UNKNOWN_ERROR, cause.getMessage(), cause));
+        return BaseResponse.newInstance(ResponseBody.failed(ErrorCodeEnum.UNKNOWN_ERROR, cause.getMessage(), cause));
     }
 }

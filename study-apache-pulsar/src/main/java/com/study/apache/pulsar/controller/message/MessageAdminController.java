@@ -1,9 +1,11 @@
 package com.study.apache.pulsar.controller.message;
 
 
+import com.study.apache.pulsar.dto.request.function.QueryFunctionRequestDto;
 import com.study.apache.pulsar.dto.request.tenant.AddTenantRequestDto;
 import com.study.apache.pulsar.dto.request.tenant.DeleteTenantRequestDto;
 import com.study.apache.pulsar.dto.response.broker.AllActiveBrokersListResponseDto;
+import com.study.apache.pulsar.dto.response.function.AllFunctionsListResponseDto;
 import com.study.apache.pulsar.dto.response.namespace.AllNamespacesListResponseDto;
 import com.study.apache.pulsar.dto.response.schema.SchemaResponseDto;
 import com.study.apache.pulsar.dto.response.tenant.AllTenantsListResponseDto;
@@ -50,7 +52,7 @@ public class MessageAdminController {
     @GetMapping(value = "tenants")
     public BaseResponse<AllTenantsListResponseDto> queryAllTenant(@ApiParam(value = "查询请求参数", required = true) BaseRequest<Void> param) throws PulsarAdminException {
         log.info("param:{}", param.toString());
-        return BaseResponse.newInstance(param, ResponseBody
+        return BaseResponse.newInstance(ResponseBody
                 .success(AllTenantsListResponseDto
                         .builder()
                         .name(admin.tenants().getTenants())
@@ -61,7 +63,7 @@ public class MessageAdminController {
     @GetMapping(value = "clusters")
     public BaseResponse<AllTenantsListResponseDto> queryAllCluster(@ApiParam(value = "查询请求参数", required = true) BaseRequest<Void> param) throws PulsarAdminException {
         log.info("param:{}", param.toString());
-        return BaseResponse.newInstance(param, ResponseBody
+        return BaseResponse.newInstance(ResponseBody
                 .success(AllTenantsListResponseDto
                         .builder()
                         .name(admin.clusters().getClusters())
@@ -72,7 +74,7 @@ public class MessageAdminController {
     @GetMapping(value = "namespaces")
     public BaseResponse<AllNamespacesListResponseDto> queryAllNamespace(@ApiParam(value = "查询请求参数,租户名称", required = true) BaseRequest<String> param) throws PulsarAdminException {
         log.info("param:{}", param.toString());
-        return BaseResponse.newInstance(param, ResponseBody
+        return BaseResponse.newInstance(ResponseBody
                 .success(AllNamespacesListResponseDto
                         .builder()
                         .name(param.getBody().getData() == null ? null : admin.namespaces().getNamespaces(param.getBody().getData()))
@@ -83,7 +85,7 @@ public class MessageAdminController {
     @GetMapping(value = "topics")
     public BaseResponse<AllTopicsListResponseDto> queryAllTopic(@ApiParam(value = "查询请求参数,namespace名称", required = true) BaseRequest<String> param) throws PulsarAdminException {
         log.info("param:{}", param.toString());
-        return BaseResponse.newInstance(param, ResponseBody
+        return BaseResponse.newInstance(ResponseBody
                 .success(AllTopicsListResponseDto
                         .builder()
                         .name(param.getBody().getData() == null ? null : admin.topics().getList(param.getBody().getData()))
@@ -94,7 +96,7 @@ public class MessageAdminController {
     @GetMapping(value = "schema")
     public BaseResponse<SchemaResponseDto> querySchema(@ApiParam(value = "查询请求参数,topic名称", required = true) BaseRequest<String> param) throws PulsarAdminException {
         log.info("param:{}", param.toString());
-        return BaseResponse.newInstance(param, ResponseBody
+        return BaseResponse.newInstance(ResponseBody
                 .success(SchemaResponseDto
                         .builder()
                         .schema(param.getBody().getData() == null ? null : admin.schemas().getSchemaInfo(param.getBody().getData()))
@@ -105,32 +107,49 @@ public class MessageAdminController {
     @GetMapping(value = "broker")
     public BaseResponse<AllActiveBrokersListResponseDto> queryActiveBroker(@ApiParam(value = "查询请求参数,cluster名称", required = true) BaseRequest<String> param) throws PulsarAdminException {
         log.info("param:{}", param.toString());
-        return BaseResponse.newInstance(param, ResponseBody
+        return BaseResponse.newInstance(ResponseBody
                 .success(AllActiveBrokersListResponseDto
                         .builder()
                         .name(param.getBody().getData() == null ? null : admin.brokers().getActiveBrokers(param.getBody().getData()))
                         .build()));
     }
 
+    @ApiOperation(value = "查询所有function信息", produces = DEFAULT_PRODUCES)
+    @GetMapping(value = "function")
+    public BaseResponse<AllFunctionsListResponseDto> queryFunction(@ApiParam(value = "查询请求参数", required = true) BaseRequest<QueryFunctionRequestDto> param) throws PulsarAdminException {
+        log.info("param:{}", param.toString());
+        QueryFunctionRequestDto dto = param.getBody().getData();
+        return BaseResponse.newInstance(ResponseBody
+                .success(AllFunctionsListResponseDto
+                        .builder()
+                        .name(dto == null ? null : admin.functions().getFunctions(dto.getTenant(), dto.getNamespace()))
+                        .build()));
+    }
+
+    @ApiOperation(value = "test", produces = DEFAULT_PRODUCES)
+    @GetMapping(value = "test")
+    public void test(QueryFunctionRequestDto param) {
+        log.info("param:{}", param.toString());
+    }
 
     @ApiOperation(value = "保存一个租户", produces = DEFAULT_PRODUCES)
     @PostMapping(value = "tenant")
-    public BaseResponse<Boolean> addTenant(@RequestBody @ApiParam(value = "保存租户请求参数", required = true) BaseRequest<AddTenantRequestDto> addTenantRequestDto) throws PulsarAdminException {
-        log.info("addTenantRequestDto:{}", addTenantRequestDto.toString());
-        AddTenantRequestDto addTenantInfo = addTenantRequestDto.getBody().getData();
+    public BaseResponse<Boolean> addTenant(@RequestBody @ApiParam(value = "保存租户请求参数", required = true) BaseRequest<AddTenantRequestDto> param) throws PulsarAdminException {
+        log.info("param:{}", param.toString());
+        AddTenantRequestDto addTenantInfo = param.getBody().getData();
         if (admin.tenants().getTenants().contains(addTenantInfo.getName())) {
             admin.tenants().updateTenant(addTenantInfo.getName(), addTenantInfo.getInfo());
         } else {
             admin.tenants().createTenant(addTenantInfo.getName(), addTenantInfo.getInfo());
         }
-        return BaseResponse.newInstance(addTenantRequestDto, ResponseBody.success(admin.tenants().getTenants().contains(addTenantInfo.getName())));
+        return BaseResponse.newInstance(ResponseBody.success(admin.tenants().getTenants().contains(addTenantInfo.getName())));
     }
 
     @ApiOperation(value = "删除多个租户", produces = DEFAULT_PRODUCES)
     @DeleteMapping(value = "tenant")
-    public BaseResponse<Boolean> deleteTenant(@RequestBody @ApiParam(value = "删除租户请求参数", required = true) BaseRequest<DeleteTenantRequestDto> deleteTenantRequestDto) throws PulsarAdminException {
-        log.info("deleteTenantRequestDto:{}", deleteTenantRequestDto.toString());
-        DeleteTenantRequestDto deleteTenant = deleteTenantRequestDto.getBody().getData();
+    public BaseResponse<Boolean> deleteTenant(@RequestBody @ApiParam(value = "删除租户请求参数", required = true) BaseRequest<DeleteTenantRequestDto> param) throws PulsarAdminException {
+        log.info("param:{}", param.toString());
+        DeleteTenantRequestDto deleteTenant = param.getBody().getData();
         Set<String> names = deleteTenant.getName();
         List<String> deletedNames = new ArrayList<>(names.size());
         Set<String> existed = new HashSet<>(admin.tenants().getTenants());
@@ -140,6 +159,6 @@ public class MessageAdminController {
                 deletedNames.add(name);
             }
         }
-        return BaseResponse.newInstance(deleteTenantRequestDto, ResponseBody.success(deletedNames.isEmpty() || !admin.tenants().getTenants().containsAll(deletedNames)));
+        return BaseResponse.newInstance(ResponseBody.success(deletedNames.isEmpty() || !admin.tenants().getTenants().containsAll(deletedNames)));
     }
 }

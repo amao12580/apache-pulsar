@@ -2,11 +2,12 @@ package com.study.apache.pulsar.config.pulsar.consumer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PreDestroy;
+import javax.annotation.Resource;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static com.study.apache.pulsar.config.Constants.*;
@@ -25,7 +26,7 @@ import static com.study.apache.pulsar.config.Constants.*;
 public class ConsumerAutoConfiguration {
     private Consumer<String> consumer;
 
-    @Autowired
+    @Resource
     private MessageListener<String> messageListener;
 
     @Bean
@@ -36,11 +37,16 @@ public class ConsumerAutoConfiguration {
                 .ackTimeout(30, TimeUnit.SECONDS)
                 .messageListener(messageListener)
                 .subscriptionType(SubscriptionType.Failover)
+                .readCompacted(true)
+                .autoUpdatePartitions(true)
+                .maxTotalReceiverQueueSizeAcrossPartitions(10 * 1000)
+                .receiverQueueSize(1000)
+                .subscriptionInitialPosition(SubscriptionInitialPosition.Latest)
                 .deadLetterPolicy(DeadLetterPolicy.builder()
                         .maxRedeliverCount(3)
                         .deadLetterTopic(TOPIC_DEAD_LETTER)
                         .build())
-                .consumerName(CONSUMER_TEST)
+                .consumerName(UUID.randomUUID().toString())
                 .subscribe();
         return consumer;
     }

@@ -23,6 +23,9 @@ public class MessageReceiveListener implements MessageListener<String> {
     @Override
     public void received(Consumer<String> consumer, Message<String> message) {
         log.info("{}", consumer.getStats().getNumMsgsReceived());
+        log.info(consumer.getConsumerName());
+        log.info(consumer.getTopic());
+        log.info(consumer.getSubscription());
         log.info(message.getTopicName());
         log.info(message.getProducerName());
         log.info(message.getKey());

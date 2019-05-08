@@ -53,6 +53,11 @@ logging:
     max-size: 50MB
   level:
     root: debug
+    com:
+      netflix:
+        config: error
+        discovery: error
+        util: error
     springfox:
       bean: info
       documentation: info
@@ -62,3 +67,17 @@ logging:
       hibernate: info
     sun:
       rmi: info
+
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    service-url:
+      defaultZone:  http://127.0.0.1:9003/eureka/
+    registry-fetch-interval-seconds: 5
+  instance:
+    preferIpAddress: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    hostname: ${spring.cloud.client.ip-address}
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 10

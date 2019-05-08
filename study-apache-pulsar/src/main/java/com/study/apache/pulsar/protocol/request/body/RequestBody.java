@@ -23,4 +23,10 @@ import java.io.Serializable;
 public class RequestBody<T> implements Serializable {
     @ApiModelProperty(value = "业务数据")
     T data;
+
+    public static <M> RequestBody<M> newInstance(M data) {
+        RequestBody<M> body = new RequestBody<>();
+        body.setData(data);
+        return body;
+    }
 }

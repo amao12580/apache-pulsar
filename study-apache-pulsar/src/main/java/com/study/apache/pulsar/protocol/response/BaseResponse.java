@@ -1,5 +1,6 @@
 package com.study.apache.pulsar.protocol.response;
 
+import com.study.apache.pulsar.config.base.SpringApplicationContextHolder;
 import com.study.apache.pulsar.protocol.common.algorithm.AlgorithmTypeEnum;
 import com.study.apache.pulsar.protocol.request.BaseRequest;
 import com.study.apache.pulsar.protocol.response.body.ResponseBody;
@@ -37,7 +38,8 @@ public class BaseResponse<T> implements Serializable {
     @ApiModelProperty(value = "数据签名", required = true, position = 3)
     ResponseFoot foot;
 
-    public static <M> BaseResponse<M> newInstance(BaseRequest request, ResponseBody<M> data) {
+    public static <M> BaseResponse<M> newInstance(ResponseBody<M> body) {
+        BaseRequest request = SpringApplicationContextHolder.getBean(BaseRequest.class);
         BaseResponse<M> response = new BaseResponse<>();
         response.setHead(ResponseHeader.builder()
                 .id(UUID.randomUUID().toString())
@@ -45,7 +47,7 @@ public class BaseResponse<T> implements Serializable {
                 .requestId(request == null || request.getHead() == null ? null : request.getHead().getId())
                 .timestamp(new Date())
                 .build());
-        response.setBody(data);
+        response.setBody(body);
         response.setFoot(ResponseFoot.builder()
                 .build());
         return response;

@@ -22,7 +22,9 @@ public interface Constants {
      */
     String TOPIC_DEAD_LETTER = "dead-letter-topic";
 
-    String TOPIC_TEST = "my-topic-03";
+//    String TOPIC_TEST = "my-topic-03";
+
+    String TOPIC_TEST = "persistent://public/default/my-topic-03";
 
     String CONSUMER_TEST = "my-consumer-03";
 

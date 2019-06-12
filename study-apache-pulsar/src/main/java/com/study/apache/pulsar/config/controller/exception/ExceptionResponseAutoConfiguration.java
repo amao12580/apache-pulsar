@@ -1,6 +1,5 @@
 package com.study.apache.pulsar.config.controller.exception;
 
-import com.study.apache.pulsar.protocol.request.BaseRequest;
 import com.study.apache.pulsar.protocol.response.BaseResponse;
 import com.study.apache.pulsar.protocol.response.body.ResponseBody;
 import com.study.apache.pulsar.protocol.response.body.error.enums.ErrorCodeEnum;
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import javax.annotation.Resource;
-
 /**
  * Created with IntelliJ IDEA.
  * User:ChengLiang
@@ -28,9 +25,6 @@ import javax.annotation.Resource;
 @Configuration
 @RestControllerAdvice
 public class ExceptionResponseAutoConfiguration {
-
-    @Resource
-    private BaseRequest baseRequest;
 
     @ExceptionHandler({BadRequestException.class, IllegalArgumentException.class})
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)

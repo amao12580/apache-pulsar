@@ -47,7 +47,8 @@ management:
 logging:
   path: 'logs/'
   pattern:
-    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(${LOG_LEVEL_PATTERN:-%5p}) %boldMagenta(${PID:- }) %cyan(---){faint} %green([%thread]) %cyan(%logger{69}) %highlight([%method] [%L]) %cyan(:) %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}'
+    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} %clr(${LOG_LEVEL_PATTERN:-%5p}) %boldMagenta(${PID:- }) %cyan(---){faint} %green([%thread]) %cyan(%logger{69}) %clr([%method] [%L]) %cyan(:) %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}'
+    file: '${logging.pattern.console}'
   file:
     max-history: 3
     max-size: 50MB

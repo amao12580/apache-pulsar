@@ -18,7 +18,7 @@
         <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
         <spring.cloud.main.version>Greenwich.SR1</spring.cloud.main.version>
         <spring.boot.main.version>2.1.4.RELEASE</spring.boot.main.version>
-        <pulsar.main.version>2.3.1</pulsar.main.version>
+        <pulsar.main.version>2.7.5</pulsar.main.version>
     </properties>
 
     <dependencyManagement>
